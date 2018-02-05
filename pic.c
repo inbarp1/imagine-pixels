@@ -7,27 +7,17 @@
 int main(){
   char buf[256];
   int r,g,b;
-  r = 139;
-  g = 0;
-  b = 139;
   int fd =open("picmaker.ppm",O_CREAT|O_WRONLY,0644);
-  write(fd,"P3\n500 500\n139\n", strlen("P3\n500 500\n255\n")); 
-  int w = 0, h = 0;
-  while(h < 500){
-    w=0;
-    while(w < 500){
-      if(g == 255){
-	g = 0;
-      }
-      else{
-	g++;
-      }
-      sprintf(buf,"%d %d %d\n",r,g,b);
-      write(fd,buf,strlen(buf));
-      w++;
+  write(fd,"P3\n500 500\n255\n", strlen("P3\n500 500\n255\n")); 
+  int w, h;
+  for (w  = 0; w < 500; w++)
+    for (h=0; h < 500; h++) {
+      r =  w % 256;
+      g = h/2;
+      b = w/2;
+      sprintf(buf,"%d %d %d ", r, g, b);
+      write(fd, buf, strlen(buf));
     }
-    h++;
-  }
   close(fd);
   return 0;
 }
